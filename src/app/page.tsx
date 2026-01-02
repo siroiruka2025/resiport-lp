@@ -24,6 +24,8 @@ import { Badge } from "@/components/ui/badge";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 
+
+
 const CONTACT_EMAIL = "info@peripheralnation.jp";
 const FORMSPREE_ENDPOINT =
   process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT || "";
