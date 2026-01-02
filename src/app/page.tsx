@@ -28,26 +28,27 @@ const CONTACT_EMAIL = "info@peripheralnation.jp";
 const FORMSPREE_ENDPOINT =
   process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT || "";
 
+// 機能コピーを“何が不要になるか”ベースに調整
 const features = [
   {
     icon: Megaphone,
     title: "お知らせ一括配信",
-    text: "物件・棟単位で入居者へ即通知。履歴も自動保存。",
+    text: "入居者への連絡を、まとめて一度で。掲示板や紙の配布は、もう必要ありません。",
   },
   {
     icon: FileText,
     title: "ルール・取説PDF",
-    text: "ゴミ出しや設備取扱をアプリで一元化。迷わない暮らしへ。",
+    text: "ゴミ出しや設備のルールをアプリに固定表示。何度も同じ説明をする手間はなくなります。",
   },
   {
     icon: MessageSquare,
     title: "問い合わせ・修繕",
-    text: "写真付きでワンタップ報告。ステータス管理も簡単。",
+    text: "問い合わせはアプリから。電話に出られない時間でも、対応状況が分かります。",
   },
   {
     icon: Languages,
     title: "多言語対応",
-    text: "英語・中国語から順次拡大。外国人入居者も安心。",
+    text: "英語・中国語から対応。外国人入居者にも伝わる連絡体制を。",
   },
 ];
 
@@ -55,22 +56,60 @@ const tiers = [
   {
     name: "Free",
     price: "¥0",
-    detail: "1物件・広告あり",
-    bullets: ["PDF 1件", "お知らせ配信", "メールサポート"],
+    detail: "β期間：無料（まずは1物件から）",
+    bullets: ["お知らせ配信", "ルール・取説掲載（PDF 1件）", "メールサポート"],
   },
   {
     name: "Basic",
     price: "¥980",
-    detail: "最大10物件",
-    bullets: ["PDF無制限", "一括配信", "ブランドバナー"],
+    detail: "正式版予定：小規模オーナーの標準",
+    bullets: ["PDF無制限", "一括配信", "ブランドバナー（小さめ）"],
   },
   {
     name: "Pro",
     price: "¥4,980",
-    detail: "多言語・チャット",
-    bullets: ["多言語UI", "チャット管理", "入居者分析"],
+    detail: "正式版予定：多言語・運用強化",
+    bullets: ["多言語UI", "チャット管理", "入居者対応の状況把握"],
   },
 ];
+
+
+const faqs = [
+  {
+    q: "本当に1〜50戸向けなんですか？",
+    a: "はい。ResiPortは小規模物件での入居者対応に特化しています。大規模向けの複雑な機能はあえて入れていません。",
+  },
+  {
+    q: "入居者はアプリのインストールが必要ですか？",
+    a: "いいえ。QRコードのワンショットで利用可能です（スマホ・タブレット・PC対応）。",
+  },
+  {
+    q: "β期間は本当に無料ですか？",
+    a: "はい。β期間中は基本機能を無料でお試しいただけます。クレジットカードの登録も不要です。",
+  },
+  {
+    q: "β期間が終わったら自動で課金されますか？",
+    a: "いいえ。β期間終了後に、改めて正式プランをご案内します。ご納得いただいた方のみ継続してご利用ください。",
+  },
+    {
+    q: "個人オーナーでも使えますか？",
+    a: "もちろんです。1棟だけ、数戸だけでも問題ありません。むしろ、そうしたオーナーさま向けに設計しています。",
+  },
+  {
+    q: "多言語はどこまで対応しますか？",
+    a: "まずは英語・中国語から。現場で要望が多い言語を優先して拡大します。",
+  },
+  {
+    q: "収支管理や利回り計算はどこまでできますか？",
+    a: "β版では、物件ごとの収支メモや簡易的な利回り確認が可能です。本格的な収支管理機能は、β利用者の声をもとに検討します。",
+  },
+  {
+    q: "導入費用が非常に安価なのはなぜですか？",
+    a: "戸数規模を限定した最適設計で実現しています。",
+  },
+];
+
+
 
 export default function ResiPortLanding() {
   const [loading, setLoading] = useState(false);
@@ -80,7 +119,6 @@ export default function ResiPortLanding() {
     const formEl = e.currentTarget;
     const form = new FormData(formEl);
 
-    // 必須チェック
     if (!form.get("email") || !form.get("name")) {
       toast.error("お名前とメールアドレスを入力してください。");
       return;
@@ -166,6 +204,9 @@ export default function ResiPortLanding() {
             <a className="hover:text-slate-900" href="#apply">
               β参加
             </a>
+            <a className="hover:text-slate-900" href="#faq">
+              FAQ
+            </a>
           </div>
           <Button
             asChild
@@ -178,30 +219,50 @@ export default function ResiPortLanding() {
       </header>
 
       {/* ヒーロー：白背景＋オレンジ＆水色 */}
-      <section className="border-b border-slate-100 bg-gradient-to-b from-white via-sky-50/40 to-white">
-        <div className="max-w-6xl mx-auto px-4 pt-14 pb-12">
+      <section className="relative overflow-hidden border-b border-slate-100 bg-white">
+        {/* 抽象背景レイヤー */}
+        <div className="pointer-events-none absolute inset-0">
+          {/* オレンジのにじみ */}
+          <div className="absolute -top-32 -left-32 h-[420px] w-[420px] rounded-full bg-orange-200/30 blur-3xl" />
+          {/* 水色のにじみ */}
+          <div className="absolute top-40 -right-32 h-[380px] w-[380px] rounded-full bg-sky-200/30 blur-3xl" />
+        </div>
+
+        <div className="relative z-10 max-w-6xl mx-auto px-4 pt-14 pb-12">
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <div>
               <Badge className="mb-4 bg-orange-50 text-orange-700 border-orange-200">
                 βテスター募集
               </Badge>
+
+              {/* 感情の入口フレーズ（小さめ） */}
+              <p className="text-sm text-slate-500 mb-2">
+                オーナーはもう、管理で頑張らなくていい。
+              </p>
+
               <motion.h1
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
                 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900"
               >
-                小さな物件でも、
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-amber-400 to-sky-500">
-                  入居者アプリは当たり前に。
-                </span>
+                入居者対応、今日からアプリで。
               </motion.h1>
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-amber-400 to-sky-500">
+                大規模向けは要らない。1〜50戸のための、ちょうどいい管理アプリ。
+              </span>
+
+              
+
               <p className="mt-5 text-slate-600 leading-relaxed">
                 ResiPort は、1〜50戸クラスのオーナー・管理者向けに作った
-                “ちょうどいい” 入居者アプリ。お知らせ、ゴミ出しルール、取扱説明書、
-                問い合わせまで、LINE感覚でまとめて管理できます。
-                β版では、物件ごとのざっくり利回りや収支メモも一部試験導入します。
+                入居者対応に特化した管理アプリです。
+                お知らせ配信、ゴミ出しルール、取扱説明書、問い合わせ対応まで。
+                管理で頑張らなくていい状態を、今日から作れます。
+                <br /><br />
+                β版では、物件ごとの簡易的な収支メモや利回り確認も一部試験導入します。
               </p>
+
               <div className="mt-6 flex flex-wrap gap-3">
                 <Button
                   asChild
@@ -217,6 +278,11 @@ export default function ResiPortLanding() {
                   <a href={`mailto:${CONTACT_EMAIL}`}>まずは相談したい</a>
                 </Button>
               </div>
+              {/* CTA下の不安つぶし */}
+              <p className="text-xs text-slate-500 mt-2">
+                ※ クレジットカード登録なし。お気軽にご参加ください。
+              </p>
+
               <div className="mt-4 flex flex-wrap gap-3 text-xs text-slate-500">
                 <div className="flex items-center gap-1.5">
                   <ShieldCheck className="h-4 w-4 text-emerald-500" />
@@ -277,10 +343,10 @@ export default function ResiPortLanding() {
       <section id="features" className="max-w-6xl mx-auto px-4 py-16">
         <div className="text-center mb-10">
           <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">
-            余計な機能はいらない。“これだけ”あればいい。
+            小さな物件に、本当に必要な機能だけ。
           </h2>
           <p className="text-slate-600 mt-3">
-            ResiPort は、現場で本当に使われる最小限の機能から始めます。
+            ResiPort は、現場で本当に使われる最小構成から始めます。
           </p>
         </div>
         <div className="grid md:grid-cols-4 gap-4">
@@ -311,7 +377,7 @@ export default function ResiPortLanding() {
         </div>
       </section>
 
-      {/* 料金プラン（予定） */}
+      {/* 料金プラン */}
       <section
         id="pricing"
         className="border-y border-slate-100 bg-slate-50/70"
@@ -319,10 +385,13 @@ export default function ResiPortLanding() {
         <div className="max-w-6xl mx-auto px-4 py-16">
           <div className="text-center mb-10">
             <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">
-              料金プラン（予定）
+              料金プラン（β期間は無料）
             </h2>
             <p className="text-slate-600 mt-3">
-              β期間は無料。ご意見をくださった方には、正式版で優遇プランをご案内します。
+              まずは無料で使って、手応えがあれば続ける。それでOKです。
+            </p>
+            <p className="text-slate-500 mt-1 text-xs">
+              ※ 下記は正式リリース時の予定価格です（内容はβ利用者の声で調整します）。
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-5">
@@ -380,6 +449,55 @@ export default function ResiPortLanding() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section id="faq" className="max-w-6xl mx-auto px-4 py-16">
+        <div className="text-center mb-10">
+          <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">
+            よくある質問
+          </h2>
+          <p className="text-slate-600 mt-3">
+            気になるところ、お答えします。
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-4">
+          {faqs.map((item, i) => (
+            <Card key={i} className="bg-white border border-slate-200 shadow-sm">
+              <CardContent className="p-6">
+                <div className="font-semibold text-slate-900 flex items-start gap-2">
+                  <span className="mt-[2px] inline-flex h-6 w-6 items-center justify-center rounded-full bg-orange-50 text-orange-700 border border-orange-200 text-sm">
+                    Q
+                  </span>
+                  <span>{item.q}</span>
+                </div>
+                <div className="mt-3 text-sm text-slate-600 flex items-start gap-2">
+                  <span className="mt-[2px] inline-flex h-6 w-6 items-center justify-center rounded-full bg-sky-50 text-sky-700 border border-sky-200 text-sm">
+                    A
+                  </span>
+                  <span>{item.a}</span>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        <div className="mt-10 text-center">
+          <p className="text-sm text-slate-600 mb-3">
+            「とりあえず試す」だけで大丈夫です。
+          </p>
+          <Button
+            asChild
+            className="rounded-2xl bg-orange-500 hover:bg-orange-600 text-white"
+          >
+            <a href="#apply">βに参加する</a>
+          </Button>
+          <p className="text-xs text-slate-500 mt-2">
+            ※ クレジットカード登録なし。お気軽にご参加ください。
+          </p>
+        </div>
+      </section>
+
+
       {/* β応募フォーム */}
       <section id="apply" className="max-w-6xl mx-auto px-4 py-16">
         <div className="grid md:grid-cols-2 gap-8 items-start">
@@ -391,7 +509,7 @@ export default function ResiPortLanding() {
               対象：1〜50戸程度を管理しているオーナー・管理会社さま。
               「とりあえず1棟で試してみたい」という方も歓迎です。
             </p>
-            {/* ★ ここに追加 */}
+
             <div className="mt-4 rounded-xl bg-orange-50 border border-orange-100 px-4 py-3 text-xs md:text-sm text-orange-900">
               <div className="font-semibold mb-1 flex items-center gap-1.5">
                 <Sparkles className="h-4 w-4 text-orange-500" />
