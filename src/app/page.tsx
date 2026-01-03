@@ -633,10 +633,16 @@ export default function ResiPortLanding() {
             >
               お問い合わせ
             </a>
-            <a className="hover:text-slate-900 hover:underline" href="#">
+            <a
+              className="hover:text-slate-900 hover:underline"
+              href="/terms"
+            >
               利用規約
             </a>
-            <a className="hover:text-slate-900 hover:underline" href="#">
+            <a
+              className="hover:text-slate-900 hover:underline"
+              href="/privacy"
+            >
               プライバシー
             </a>
           </div>
