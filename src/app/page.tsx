@@ -280,6 +280,18 @@ export default function ResiPortLanding() {
                   <a href={`mailto:${CONTACT_EMAIL}`}>まずは相談したい</a>
                 </Button>
               </div>
+
+
+              <div className="mt-6 flex items-center gap-4">
+                <div className="rounded-2xl border border-slate-200 p-3 bg-white">
+                  <Image src="/qr-demo.png" alt="ResiPort demo QR" width={120} height={120} />
+                </div>
+                <div className="text-sm text-slate-600">
+                  スマホでそのままデモ体験できます<br />
+                  <span className="text-xs text-slate-500">（インストール不要）</span>
+                </div>
+              </div>
+
               {/* CTA下の不安つぶし */}
               <p className="text-xs text-slate-500 mt-2">
                 ※ クレジットカード登録なし。お気軽にご参加ください。
